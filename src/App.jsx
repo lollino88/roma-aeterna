@@ -136,6 +136,7 @@ const TAPPE = [
 function Bussola({ targetLat, targetLng, userLat, userLng }) {
   const [angolo, setAngolo] = useState(null);
   const [bussola, setBussola] = useState(0);
+  const [aperta, setAperta] = useState(false);
 
   useEffect(() => {
     if (!userLat || !userLng) return;
@@ -146,7 +147,7 @@ function Bussola({ targetLat, targetLng, userLat, userLng }) {
   }, [targetLat, targetLng, userLat, userLng]);
 
   useEffect(() => {
-   const handler = (e) => {
+    const handler = (e) => {
       const alpha = e.webkitCompassHeading ?? e.alpha ?? 0;
       setBussola(alpha);
     };
@@ -173,29 +174,60 @@ function Bussola({ targetLat, targetLng, userLat, userLng }) {
   const rotazione = angolo !== null ? angolo - bussola : 0;
 
   return (
-    <div style={{
-      display: "flex", flexDirection: "column", alignItems: "center", gap: 6
-    }}>
-      <div style={{
-        width: 80, height: 80, borderRadius: "50%",
-        background: "rgba(139,26,26,0.15)",
-        border: "2px solid #8B1A1A",
-        display: "flex", alignItems: "center", justifyContent: "center",
-        boxShadow: "0 0 20px rgba(139,26,26,0.3)"
-      }}>
+    <>
+      {/* Bussola piccola — sempre visibile */}
+      <div onClick={() => setAperta(true)} style={{ cursor: "pointer", display: "flex", flexDirection: "column", alignItems: "center", gap: 6 }}>
         <div style={{
-          fontSize: 36,
-          transform: `rotate(${rotazione}deg)`,
-          transition: "transform 0.3s ease",
-          filter: "drop-shadow(0 0 4px #B8860B)"
+          width: 80, height: 80, borderRadius: "50%",
+          background: "rgba(139,26,26,0.15)",
+          border: "2px solid #8B1A1A",
+          display: "flex", alignItems: "center", justifyContent: "center",
+          boxShadow: "0 0 20px rgba(139,26,26,0.3)"
         }}>
-          🧭
+          <div style={{
+            fontSize: 36,
+            transform: `rotate(${rotazione}deg)`,
+            transition: "transform 0.3s ease",
+            filter: "drop-shadow(0 0 4px #B8860B)"
+          }}>🧭</div>
         </div>
+        <span style={{ fontSize: 10, color: "#B8860B", letterSpacing: 1 }}>
+          {userLat ? "SEGUI LA BUSSOLA" : "ATTIVA GPS"}
+        </span>
       </div>
-      <span style={{ fontSize: 10, color: "#B8860B", letterSpacing: 1 }}>
-        {userLat ? "SEGUI LA BUSSOLA" : "ATTIVA GPS"}
-      </span>
-    </div>
+
+      {/* Bussola grande — sovraimpressione */}
+      {aperta && (
+        <div onClick={() => setAperta(false)} style={{
+          position: "fixed", top: 0, left: 0, right: 0, bottom: 0,
+          background: "rgba(0,0,0,0.92)",
+          display: "flex", flexDirection: "column",
+          alignItems: "center", justifyContent: "center",
+          zIndex: 1000, cursor: "pointer"
+        }}>
+          <div style={{ fontSize: 11, color: "#B8860B", letterSpacing: 3, marginBottom: 32 }}>
+            FRATRES AETERNAE URBIS
+          </div>
+          <div style={{
+            width: 240, height: 240, borderRadius: "50%",
+            background: "rgba(139,26,26,0.1)",
+            border: "2px solid #8B1A1A",
+            display: "flex", alignItems: "center", justifyContent: "center",
+            boxShadow: "0 0 60px rgba(139,26,26,0.4)"
+          }}>
+            <div style={{
+              fontSize: 140,
+              transform: `rotate(${rotazione}deg)`,
+              transition: "transform 0.3s ease",
+              filter: "drop-shadow(0 0 8px #B8860B)"
+            }}>🧭</div>
+          </div>
+          <div style={{ fontSize: 11, color: "#555", marginTop: 32, letterSpacing: 2 }}>
+            TOCCA PER CHIUDERE
+          </div>
+        </div>
+      )}
+    </>
   );
 }
 
