@@ -146,14 +146,24 @@ function Bussola({ targetLat, targetLng, userLat, userLng }) {
   }, [targetLat, targetLng, userLat, userLng]);
 
   useEffect(() => {
-    const handler = (e) => {
+   const handler = (e) => {
       const alpha = e.webkitCompassHeading ?? e.alpha ?? 0;
       setBussola(alpha);
     };
-    if (window.DeviceOrientationEvent) {
-      window.addEventListener("deviceorientationabsolute", handler, true);
-      window.addEventListener("deviceorientation", handler, true);
-    }
+    const attiva = () => {
+      if (typeof DeviceOrientationEvent !== "undefined" &&
+          typeof DeviceOrientationEvent.requestPermission === "function") {
+        DeviceOrientationEvent.requestPermission()
+          .then((r) => {
+            if (r === "granted") {
+              window.addEventListener("deviceorientation", handler, true);
+            }
+          });
+      } else {
+        window.addEventListener("deviceorientation", handler, true);
+      }
+    };
+    attiva();
     return () => {
       window.removeEventListener("deviceorientationabsolute", handler, true);
       window.removeEventListener("deviceorientation", handler, true);
