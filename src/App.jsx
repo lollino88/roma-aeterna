@@ -274,10 +274,7 @@ const verificaRisposta = () => {
               {tappaNum < totTappe ? "CONFERMA SIGILLO →" : "⚔️ CONFERMA FINALE"}
             </button>
 
-            <button onClick={() => onApriMaps(tappa)} style={{ width: "100%", background: "#1A1A1A", color: "#B8860B", border: "1px solid #B8860B", borderRadius: 6, padding: 12, fontSize: 12, letterSpacing: 1, cursor: "pointer" }}>
-              🗺 APRI NAVIGAZIONE
-            </button>
-          </>
+            </>
         )}
       </div>
 
