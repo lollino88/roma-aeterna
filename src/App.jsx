@@ -187,11 +187,12 @@ function SchermataTappa({ tappa, tappaNum, totTappe, userLat, userLng, onComplet
     : null;
   const vicino = distanza !== null && distanza < 150;
 
-  const verificaRisposta = () => {
+const verificaRisposta = () => {
     const pulita = risposta.trim().toLowerCase();
     if (pulita === tappa.risposta.toLowerCase()) {
       setErrore(false);
-      onCompleta();
+      setRisposta("");
+      setFase("successo");
     } else {
       setErrore(true);
       setTentativi(t => t + 1);
@@ -227,7 +228,22 @@ function SchermataTappa({ tappa, tappaNum, totTappe, userLat, userLng, onComplet
             </button>
           </>
         )}
-
+{fase === "successo" && (
+  <>
+    <div style={{ background: "#1A1A1A", border: "1px solid #006400", borderRadius: 8, padding: 20, marginBottom: 20, textAlign: "center" }}>
+      <div style={{ fontSize: 32, marginBottom: 12 }}>⚔️</div>
+      <div style={{ fontSize: 11, color: "#90EE90", letterSpacing: 2, marginBottom: 12 }}>SIGILLO TROVATO</div>
+      <p style={{ color: "#C0A882", fontSize: 13, lineHeight: 1.8, margin: 0 }}>
+        {tappaNum < totTappe
+          ? `Hai decifrato il codice dei Fratres. La prossima tappa ti aspetta: ${TAPPE[tappaNum].nome}.`
+          : "Hai completato l'ultima tappa. I Fratres Aeternae Urbis ti hanno visto."}
+      </p>
+    </div>
+    <button onClick={onCompleta} style={{ width: "100%", background: tappaNum < totTappe ? "#8B1A1A" : "#B8860B", color: tappaNum < totTappe ? "#F5F0E8" : "#0A0A0A", border: "none", borderRadius: 6, padding: 14, fontSize: 13, letterSpacing: 1, cursor: "pointer" }}>
+      {tappaNum < totTappe ? `PROCEDI VERSO ${TAPPE[tappaNum].nome.toUpperCase()} →` : "⚔️ COMPLETA ROMA AETERNA"}
+    </button>
+  </>
+)}
         {fase === "enigma" && (
           <>
             <div style={{ background: "#1A1A1A", border: "1px solid #8B1A1A", borderRadius: 8, padding: 16, marginBottom: 20 }}>
