@@ -325,9 +325,13 @@ export default function App() {
     window.open(`https://www.google.com/maps/dir/?api=1&destination=${tappa.lat},${tappa.lng}&travelmode=walking`, "_blank");
   };
 
-  const completaTappa = () => {
+ const completaTappa = () => {
     if (tappaCorrente < TAPPE.length - 1) {
       setTappaCorrente((t) => t + 1);
+      setFase("aneddoto");
+      setRisposta("");
+      setErrore(false);
+      setTentativi(0);
       window.scrollTo(0, 0);
     } else {
       setSchermata("finale");
