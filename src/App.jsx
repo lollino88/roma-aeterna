@@ -181,7 +181,12 @@ function SchermataTappa({ tappa, tappaNum, totTappe, userLat, userLng, onComplet
   const [risposta, setRisposta] = useState("");
   const [errore, setErrore] = useState(false);
   const [tentativi, setTentativi] = useState(0);
-
+useEffect(() => {
+    setFase("aneddoto");
+    setRisposta("");
+    setErrore(false);
+    setTentativi(0);
+  }, [tappa]);
   const distanza = userLat && tappa
     ? Math.round(Math.sqrt(Math.pow((tappa.lat - userLat) * 111000, 2) + Math.pow((tappa.lng - userLng) * 111000 * Math.cos(userLat * Math.PI / 180), 2)))
     : null;
