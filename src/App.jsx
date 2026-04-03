@@ -1,98 +1,152 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 
 const TAPPE = [
   {
     id: 1, nome: "Cripta dei Cappuccini", indirizzo: "Via Veneto 27, Roma",
     orario: "9:30", lat: 41.9049, lng: 12.4885,
+    foto: "https://images.unsplash.com/photo-1548013146-72479768bada?w=800&q=60",
     aneddoto: "L'artista che costruì questo posto non ha mai firmato il suo lavoro. Nessuno sa con certezza chi sia. All'ingresso della cripta c'è scritto: \"Quello che voi siete noi eravamo; quello che noi siamo voi sarete.\" Oltre quella soglia, quasi 4.000 frati sono diventati architettura.",
     enigma: "Cinque stanze, ognuna col nome di ciò che resta. Percorri il corridoio fino in fondo. Sul soffitto dell'ultima cappella, qualcuno che non è mai stato adulto regge qualcosa con entrambe le mani. Cos'è l'oggetto che tiene nella mano sinistra?",
     risposta: "bilancia",
+    suggerimento: "Pensa alla giustizia — uno strumento per pesare le anime.",
   },
   {
     id: 2, nome: "Casa dei Cavalieri di Rodi", indirizzo: "Piazza del Grillo 1, Roma",
     orario: "10:30", lat: 41.8948, lng: 12.4867,
+    foto: "https://images.unsplash.com/photo-1552832230-c0197dd311b5?w=800&q=60",
     aneddoto: "Questo edificio non compare sulle mappe turistiche. È incastrato sopra il Foro di Augusto come se qualcuno avesse costruito casa sua direttamente sul passato. Oggi appartiene all'Ordine di Malta: uno Stato sovrano di 1,2 ettari che esiste da nove secoli.",
     enigma: "Sali alla loggia. Sotto di te, duemila anni di storia giacciono nel fango. Il foro che vedi appartiene a un imperatore che amava i libri più delle battaglie. Qual è il suo nome?",
     risposta: "augusto",
+    suggerimento: "Il suo nome è anche un mese dell'anno.",
   },
   {
     id: 3, nome: "Pantheon", indirizzo: "Piazza della Rotonda, Roma",
     orario: "11:05", lat: 41.8986, lng: 12.4769,
+    foto: "https://images.unsplash.com/photo-1603199506016-b9a594b593c0?w=800&q=60",
     aneddoto: "Michelangelo lo definì \"opera di angeli, non di uomini.\" L'imperatore che lo ricostruì era così potente da permettersi il gesto più raro tra i potenti: rinunciare alla firma. Sulla facciata c'è ancora il nome di chi lo costruì la prima volta.",
     enigma: "Entra. Non guardare in su — lo fanno già tutti. Guarda giù. Il pavimento beve la pioggia attraverso buchi quasi invisibili. Ora alza gli occhi: conta gli anelli di cassettoni che salgono verso l'occhio aperto sul cielo. Quanti sono?",
     risposta: "cinque",
+    suggerimento: "È anche il numero delle dita di una mano.",
   },
   {
     id: 4, nome: "Santa Maria sopra Minerva", indirizzo: "Piazza della Minerva, Roma",
     orario: "11:40", lat: 41.898, lng: 12.4778,
+    foto: "https://images.unsplash.com/photo-1529154166925-574a0236a4f4?w=800&q=60",
     aneddoto: "È a tre minuti dal Pantheon. Quasi nessuno entra. È l'unica chiesa gotica di Roma — dentro sembra Parigi, non Roma. Il cielo è blu con stelle d'oro. Fuori, Bernini ha messo un elefante che regge un obelisco egizio.",
     enigma: "Prima di entrare, leggi l'iscrizione sul basamento dell'elefante. È in latino. Qual è l'ultima parola che riesci a leggere?",
     risposta: "mente",
+    suggerimento: "È una parola latina che indica l'intelletto, la ragione.",
   },
   {
     id: 5, nome: "Largo Argentina", indirizzo: "Largo di Torre Argentina, Roma",
     orario: "12:05", lat: 41.896, lng: 12.4769,
+    foto: "https://images.unsplash.com/photo-1545158535-c3f7168c28b6?w=800&q=60",
     aneddoto: "Non c'è nessuna targa che dica \"qui fu assassinato Giulio Cesare.\" Nessun monumento. Solo rovine e gatti. Eppure il 15 marzo del 44 a.C., in questo preciso punto, finì la Repubblica.",
     enigma: "Trovate le rovine dei quattro templi. Leggete la targa informativa sul sito — c'è una data precisa legata all'assassinio più famoso della storia. Non il giorno del mese, non l'anno. Il numero del giorno delle Idi di Marzo. Scrivetelo in lettere.",
     risposta: "quindici",
+    suggerimento: "Le Idi cadevano a metà mese — pensa alla metà di trenta.",
   },
   {
     id: 6, nome: "Campo de' Fiori", indirizzo: "Campo de' Fiori, Roma",
     orario: "12:30 — Pausa pranzo", lat: 41.8956, lng: 12.4722,
+    foto: "https://images.unsplash.com/photo-1560969184-10fe8719e047?w=800&q=60",
     aneddoto: "La statua al centro non è un eroe — è un eretico. Giordano Bruno fu bruciato vivo qui il 17 febbraio 1600, condannato per aver detto che l'universo è infinito. Aveva ragione.",
     enigma: "Guarda le mani della statua — non il cappuccio. Cosa stringono? Quell'oggetto nella tradizione di cui Bruno faceva parte si porta sempre sul cuore. Scrivi cosa tiene in mano.",
     risposta: "libro",
+    suggerimento: "È l'oggetto che contiene la conoscenza — la causa della sua condanna.",
   },
   {
     id: 7, nome: "Portico d'Ottavia", indirizzo: "Via del Portico d'Ottavia, Roma",
     orario: "13:30", lat: 41.8925, lng: 12.4785,
+    foto: "https://images.unsplash.com/photo-1571498664957-fde285d79857?w=800&q=60",
     aneddoto: "La presenza degli ebrei a Roma risale al II secolo a.C. — è la comunità più antica d'Europa ancora esistente. Il Portico d'Ottavia fu costruito da Augusto in onore di sua sorella. Per secoli le sue colonne fecero da cornice al mercato del pesce.",
     enigma: "Nel muro di questo portico c'è una lapide che non parla di imperatori. Parla del secolo scorso — il più buio. Trovala e leggi l'anno che riporta. Scrivilo.",
     risposta: "1943",
+    suggerimento: "È l'anno della deportazione degli ebrei romani durante la Seconda Guerra Mondiale.",
   },
   {
     id: 8, nome: "Bocca della Verità", indirizzo: "Piazza della Bocca della Verità, Roma",
     orario: "14:00", lat: 41.8882, lng: 12.4814,
+    foto: "https://images.unsplash.com/photo-1525874684015-58379d421a52?w=800&q=60",
     aneddoto: "Tutti fanno la foto con la mano in bocca. Nessuno guarda a destra. A venti metri c'è il tempio rotondo più antico di Roma in marmo greco. Per duemila anni lo chiamarono Tempio di Vesta. Avevano torto: è di Ercole.",
     enigma: "Girati verso il tempio rotondo accanto alla Bocca della Verità. Conta le colonne ancora in piedi — solo quelle intere. Quante sono? Scrivi il numero in lettere.",
     risposta: "diciannove",
+    suggerimento: "È un numero vicino a venti — quasi completo, come il tempio stesso.",
   },
   {
     id: 9, nome: "Circo Massimo", indirizzo: "Via del Circo Massimo, Roma",
     orario: "14:35", lat: 41.8859, lng: 12.4858,
+    foto: "https://images.unsplash.com/photo-1547036967-23d11aacaee0?w=800&q=60",
     aneddoto: "Duecentocinquantamila persone. Era la capienza del Circo Massimo — più grande di qualsiasi stadio costruito oggi. La pista era lunga 600 metri. Oggi è un prato. L'assenza racconta più di qualsiasi monumento.",
     enigma: "Cammina fino all'estremità orientale — quella con la curva. Fermati e guardati intorno. Alle tue spalle c'è la collina da cui i Cesari guardavano le corse. Come si chiama quella collina?",
     risposta: "palatino",
+    suggerimento: "È una delle sette colline di Roma — quella dei palazzi imperiali.",
   },
   {
     id: 10, nome: "Buco della Serratura", indirizzo: "Piazza dei Cavalieri di Malta, Roma",
     orario: "15:05", lat: 41.883, lng: 12.4785,
+    foto: "https://images.unsplash.com/photo-1513635269975-59663e0ac1ad?w=800&q=60",
     aneddoto: "Davanti a te c'è un portone verde. Se metti l'occhio nel buco della serratura attraversi tre Stati senza muoverti: Italia, Ordine di Malta, Vaticano — con la cupola di San Pietro perfettamente centrata in fondo a un viale di cipressi.",
     enigma: "Metti l'occhio nella serratura. Vedi tre stati sovrani in un solo sguardo. Qual è il terzo — quello in fondo al viale, la cui cupola è perfettamente centrata?",
     risposta: "vaticano",
+    suggerimento: "È lo Stato più piccolo del mondo, guidato dal Papa.",
   },
   {
     id: 11, nome: "Sant'Agnese in Agone", indirizzo: "Piazza Navona, Roma",
     orario: "16:00", lat: 41.8988, lng: 12.4726,
+    foto: "https://images.unsplash.com/photo-1555992828-ca4dbe41d294?w=800&q=60",
     aneddoto: "Piazza Navona non è una piazza medievale — è uno stadio romano. Lo Stadio di Domiziano, costruito nell'85 d.C., ospitava 30.000 spettatori. La forma ovale è esattamente la forma della pista. Sotto la chiesa si vedono ancora le fondamenta delle tribune.",
     enigma: "Entra nella chiesa. Scendi nella cripta. Sotto i marmi barocchi ci sono le pietre originali dello stadio. Il nome dell'imperatore che lo costruì è ovunque. Chi era?",
     risposta: "domiziano",
+    suggerimento: "Era il figlio di Vespasiano e fratello di Tito.",
   },
   {
     id: 12, nome: "Santa Maria dell'Anima", indirizzo: "Via di Santa Maria dell'Anima, Roma",
     orario: "16:35", lat: 41.8998, lng: 12.4722,
+    foto: "https://images.unsplash.com/photo-1568797629192-789acf8e4df3?w=800&q=60",
     aneddoto: "È a cinquanta metri da Piazza Navona. Quasi sempre vuota. È la chiesa nazionale dei tedeschi a Roma. Dentro c'è la tomba di Adriano VI — l'ultimo papa non italiano prima di Giovanni Paolo II. Regnò un solo anno. Morì odiato da tutti.",
     enigma: "Trova la tomba del papa dimenticato. Conta gli angeli che la custodiscono ai lati. Quanti sono? Scrivi il numero in lettere.",
     risposta: "quattro",
+    suggerimento: "È il numero degli evangelisti — Matteo, Marco, Luca, Giovanni.",
   },
   {
     id: 13, nome: "Castel Sant'Angelo", indirizzo: "Lungotevere Castello 50, Roma",
     orario: "17:15 — Gran Finale", lat: 41.9031, lng: 12.4663,
+    foto: "https://images.unsplash.com/photo-1578301978018-3005759f48f7?w=800&q=60",
     aneddoto: "Fu costruito come tomba dall'imperatore Adriano nel 135 d.C. Divenne fortezza, prigione, residenza papale. Il corridoio sopraelevato che lo collega al Vaticano serviva ai Papi per fuggire in caso di rivolta. I Fratres lo sapevano — e lo usavano.",
     enigma: "Cammina sul Ponte degli Angeli. Trova l'angelo che regge la colonna. Poi guarda in cima al castello: l'angelo di bronzo ha la spada in mano. Secondo la leggenda, quando la rimise nel fodero la peste finì. La spada è estratta o rientrata?",
     risposta: "rientrata",
+    suggerimento: "La leggenda dice che la peste finì — quindi il gesto è compiuto.",
   },
 ];
+
+function suonaSuccesso() {
+  try {
+    const ctx = new (window.AudioContext || window.webkitAudioContext)();
+    const notes = [523, 659, 784, 1047];
+    notes.forEach((freq, i) => {
+      const osc = ctx.createOscillator();
+      const gain = ctx.createGain();
+      osc.connect(gain);
+      gain.connect(ctx.destination);
+      osc.frequency.value = freq;
+      osc.type = "sine";
+      gain.gain.setValueAtTime(0.3, ctx.currentTime + i * 0.12);
+      gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + i * 0.12 + 0.3);
+      osc.start(ctx.currentTime + i * 0.12);
+      osc.stop(ctx.currentTime + i * 0.12 + 0.3);
+    });
+  } catch (e) {}
+}
+
+function formatTime(sec) {
+  const h = Math.floor(sec / 3600);
+  const m = Math.floor((sec % 3600) / 60);
+  const s = sec % 60;
+  if (h > 0) return `${h}h ${m}m ${s}s`;
+  if (m > 0) return `${m}m ${s}s`;
+  return `${s}s`;
+}
 
 function Bussola({ targetLat, targetLng, userLat, userLng }) {
   const [angolo, setAngolo] = useState(null);
@@ -126,9 +180,7 @@ function Bussola({ targetLat, targetLng, userLat, userLng }) {
       }
     };
     attiva();
-    return () => {
-      window.removeEventListener("deviceorientation", handler, true);
-    };
+    return () => window.removeEventListener("deviceorientation", handler, true);
   }, []);
 
   const rotazione = angolo !== null ? angolo - bussola : 0;
@@ -142,7 +194,7 @@ function Bussola({ targetLat, targetLng, userLat, userLng }) {
         <span style={{ fontSize: 10, color: "#B8860B", letterSpacing: 1 }}>{userLat ? "SEGUI LA BUSSOLA" : "ATTIVA GPS"}</span>
       </div>
       {aperta && (
-        <div onClick={() => setAperta(false)} style={{ position: "fixed", top: 0, left: 0, right: 0, bottom: 0, background: "rgba(0,0,0,0.92)", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", zIndex: 1000, cursor: "pointer" }}>
+        <div onClick={() => setAperta(false)} style={{ position: "fixed", top: 0, left: 0, right: 0, bottom: 0, background: "rgba(0,0,0,0.95)", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", zIndex: 1000, cursor: "pointer" }}>
           <div style={{ fontSize: 11, color: "#B8860B", letterSpacing: 3, marginBottom: 32 }}>FRATRES AETERNAE URBIS</div>
           <div style={{ width: 240, height: 240, borderRadius: "50%", background: "rgba(139,26,26,0.1)", border: "2px solid #8B1A1A", display: "flex", alignItems: "center", justifyContent: "center", boxShadow: "0 0 60px rgba(139,26,26,0.4)" }}>
             <div style={{ fontSize: 140, transform: `rotate(${rotazione}deg)`, transition: "transform 0.3s ease", filter: "drop-shadow(0 0 8px #B8860B)" }}>🧭</div>
@@ -176,27 +228,30 @@ function SchermataIntro({ onStart }) {
   );
 }
 
-function SchermataTappa({ tappa, tappaNum, totTappe, userLat, userLng, onCompleta, onApriMaps }) {
+function SchermataTappa({ tappa, tappaNum, totTappe, userLat, userLng, onCompleta, kmPercorsi, tempoTotale }) {
   const [fase, setFase] = useState("aneddoto");
   const [risposta, setRisposta] = useState("");
   const [errore, setErrore] = useState(false);
   const [tentativi, setTentativi] = useState(0);
-useEffect(() => {
+
+  useEffect(() => {
     setFase("aneddoto");
     setRisposta("");
     setErrore(false);
     setTentativi(0);
   }, [tappa]);
+
   const distanza = userLat && tappa
     ? Math.round(Math.sqrt(Math.pow((tappa.lat - userLat) * 111000, 2) + Math.pow((tappa.lng - userLng) * 111000 * Math.cos(userLat * Math.PI / 180), 2)))
     : null;
   const vicino = distanza !== null && distanza < 150;
 
-const verificaRisposta = () => {
+  const verificaRisposta = () => {
     const pulita = risposta.trim().toLowerCase();
     if (pulita === tappa.risposta.toLowerCase()) {
       setErrore(false);
       setRisposta("");
+      suonaSuccesso();
       setFase("successo");
     } else {
       setErrore(true);
@@ -206,6 +261,8 @@ const verificaRisposta = () => {
 
   return (
     <div style={{ minHeight: "100vh", background: "#0A0A0A", color: "#F5F0E8", fontFamily: "Georgia, serif" }}>
+
+      {/* Header */}
       <div style={{ background: "#1A1A1A", borderBottom: "1px solid #8B1A1A", padding: "12px 16px", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
         <div>
           <div style={{ fontSize: 10, color: "#B8860B", letterSpacing: 2 }}>TAPPA {tappaNum} / {totTappe}</div>
@@ -215,6 +272,13 @@ const verificaRisposta = () => {
         <Bussola targetLat={tappa.lat} targetLng={tappa.lng} userLat={userLat} userLng={userLng} />
       </div>
 
+      {/* Stats bar */}
+      <div style={{ background: "#111", borderBottom: "1px solid #222", padding: "6px 16px", display: "flex", justifyContent: "space-between", fontSize: 11, color: "#555" }}>
+        <span>⏱ {formatTime(tempoTotale)}</span>
+        <span>📏 {kmPercorsi.toFixed(2)} km</span>
+      </div>
+
+      {/* Distanza */}
       {distanza !== null && (
         <div style={{ background: vicino ? "rgba(0,100,0,0.2)" : "rgba(139,26,26,0.1)", borderBottom: `1px solid ${vicino ? "#006400" : "#8B1A1A"}`, padding: "8px 16px", textAlign: "center", fontSize: 12, color: vicino ? "#90EE90" : "#B8860B" }}>
           {vicino ? "✅ Sei nel posto giusto" : `📍 Sei a ${distanza}m dalla tappa`}
@@ -222,6 +286,16 @@ const verificaRisposta = () => {
       )}
 
       <div style={{ padding: 20 }}>
+
+        {/* Foto atmosferica */}
+        {fase === "aneddoto" && tappa.foto && (
+          <div style={{ position: "relative", height: 180, borderRadius: 8, overflow: "hidden", marginBottom: 16 }}>
+            <img src={tappa.foto} alt="" style={{ width: "100%", height: "100%", objectFit: "cover", filter: "brightness(0.35) contrast(1.2)", display: "block" }} />
+            <div style={{ position: "absolute", inset: 0, background: "linear-gradient(to bottom, transparent 40%, #0A0A0A 100%)" }} />
+            <div style={{ position: "absolute", bottom: 12, left: 12, fontSize: 10, color: "#B8860B", letterSpacing: 3 }}>◆ FRATRES AETERNAE URBIS</div>
+          </div>
+        )}
+
         {fase === "aneddoto" && (
           <>
             <div style={{ background: "#1A1A1A", border: "1px solid #333", borderRadius: 8, padding: 16, marginBottom: 20 }}>
@@ -233,22 +307,7 @@ const verificaRisposta = () => {
             </button>
           </>
         )}
-{fase === "successo" && (
-  <>
-    <div style={{ background: "#1A1A1A", border: "1px solid #006400", borderRadius: 8, padding: 20, marginBottom: 20, textAlign: "center" }}>
-      <div style={{ fontSize: 32, marginBottom: 12 }}>⚔️</div>
-      <div style={{ fontSize: 11, color: "#90EE90", letterSpacing: 2, marginBottom: 12 }}>SIGILLO TROVATO</div>
-      <p style={{ color: "#C0A882", fontSize: 13, lineHeight: 1.8, margin: 0 }}>
-        {tappaNum < totTappe
-          ? `Hai decifrato il codice dei Fratres. La prossima tappa ti aspetta: ${TAPPE[tappaNum].nome}.`
-          : "Hai completato l'ultima tappa. I Fratres Aeternae Urbis ti hanno visto."}
-      </p>
-    </div>
-    <button onClick={onCompleta} style={{ width: "100%", background: tappaNum < totTappe ? "#8B1A1A" : "#B8860B", color: tappaNum < totTappe ? "#F5F0E8" : "#0A0A0A", border: "none", borderRadius: 6, padding: 14, fontSize: 13, letterSpacing: 1, cursor: "pointer" }}>
-      {tappaNum < totTappe ? `PROCEDI VERSO ${TAPPE[tappaNum].nome.toUpperCase()} →` : "⚔️ COMPLETA ROMA AETERNA"}
-    </button>
-  </>
-)}
+
         {fase === "enigma" && (
           <>
             <div style={{ background: "#1A1A1A", border: "1px solid #8B1A1A", borderRadius: 8, padding: 16, marginBottom: 20 }}>
@@ -256,7 +315,14 @@ const verificaRisposta = () => {
               <p style={{ color: "#F5F0E8", fontSize: 14, lineHeight: 1.9, margin: 0 }}>{tappa.enigma}</p>
             </div>
 
-            {/* Campo risposta */}
+            {/* Suggerimento dopo 3 errori */}
+            {tentativi >= 3 && (
+              <div style={{ background: "rgba(184,134,11,0.1)", border: "1px solid #B8860B", borderRadius: 8, padding: 12, marginBottom: 12 }}>
+                <div style={{ fontSize: 10, color: "#B8860B", letterSpacing: 2, marginBottom: 6 }}>◆ INDIZIO DEI FRATRES</div>
+                <p style={{ color: "#C0A882", fontSize: 13, margin: 0, fontStyle: "italic" }}>{tappa.suggerimento}</p>
+              </div>
+            )}
+
             <div style={{ background: "#1A1A1A", border: `1px solid ${errore ? "#FF4444" : "#333"}`, borderRadius: 8, padding: 16, marginBottom: 12 }}>
               <div style={{ fontSize: 10, color: errore ? "#FF4444" : "#B8860B", letterSpacing: 2, marginBottom: 10 }}>
                 {errore ? `✗ RISPOSTA ERRATA — RIPROVA (tentativo ${tentativi})` : "◆ INSERISCI LA RISPOSTA"}
@@ -270,14 +336,31 @@ const verificaRisposta = () => {
               />
             </div>
 
-            <button onClick={verificaRisposta} style={{ width: "100%", background: "#8B1A1A", color: "#F5F0E8", border: "none", borderRadius: 6, padding: 14, fontSize: 13, letterSpacing: 1, cursor: "pointer", marginBottom: 10 }}>
+            <button onClick={verificaRisposta} style={{ width: "100%", background: "#8B1A1A", color: "#F5F0E8", border: "none", borderRadius: 6, padding: 14, fontSize: 13, letterSpacing: 1, cursor: "pointer" }}>
               {tappaNum < totTappe ? "CONFERMA SIGILLO →" : "⚔️ CONFERMA FINALE"}
             </button>
+          </>
+        )}
 
-            </>
+        {fase === "successo" && (
+          <>
+            <div style={{ background: "#1A1A1A", border: "1px solid #006400", borderRadius: 8, padding: 20, marginBottom: 20, textAlign: "center" }}>
+              <div style={{ fontSize: 40, marginBottom: 12 }}>⚔️</div>
+              <div style={{ fontSize: 11, color: "#90EE90", letterSpacing: 2, marginBottom: 12 }}>SIGILLO TROVATO</div>
+              <p style={{ color: "#C0A882", fontSize: 13, lineHeight: 1.8, margin: 0 }}>
+                {tappaNum < totTappe
+                  ? "Hai decifrato il codice dei Fratres. Segui la bussola — il prossimo sigillo ti aspetta."
+                  : "Hai trovato l'ultimo sigillo. I Fratres Aeternae Urbis ti hanno visto."}
+              </p>
+            </div>
+            <button onClick={onCompleta} style={{ width: "100%", background: tappaNum < totTappe ? "#8B1A1A" : "#B8860B", color: tappaNum < totTappe ? "#F5F0E8" : "#0A0A0A", border: "none", borderRadius: 6, padding: 14, fontSize: 13, letterSpacing: 1, cursor: "pointer" }}>
+              {tappaNum < totTappe ? "SEGUI LA BUSSOLA →" : "⚔️ COMPLETA ROMA AETERNA"}
+            </button>
+          </>
         )}
       </div>
 
+      {/* Progressione */}
       <div style={{ padding: "0 20px 20px" }}>
         <div style={{ fontSize: 10, color: "#555", letterSpacing: 2, marginBottom: 8 }}>PROGRESSIONE</div>
         <div style={{ display: "flex", gap: 4 }}>
@@ -290,19 +373,45 @@ const verificaRisposta = () => {
   );
 }
 
-function SchermataFinale() {
+function SchermataFinale({ tempoTotale, kmPercorsi }) {
+  const ore = Math.floor(tempoTotale / 3600);
+  const minuti = Math.floor((tempoTotale % 3600) / 60);
+
   return (
     <div style={{ minHeight: "100vh", background: "#0A0A0A", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", padding: 24, textAlign: "center" }}>
       <div style={{ fontSize: 64, marginBottom: 20 }}>⚔️</div>
-      <h1 style={{ color: "#B8860B", fontSize: 28, fontFamily: "Georgia, serif", marginBottom: 12 }}>ROMA AETERNA</h1>
-      <p style={{ color: "#8B1A1A", fontSize: 14, fontStyle: "italic", marginBottom: 24 }}>Completato</p>
-      <div style={{ background: "#1A1A1A", border: "1px solid #B8860B", borderRadius: 8, padding: 20, maxWidth: 340 }}>
+      <h1 style={{ color: "#B8860B", fontSize: 28, fontFamily: "Georgia, serif", marginBottom: 4 }}>ROMA AETERNA</h1>
+      <p style={{ color: "#8B1A1A", fontSize: 13, fontStyle: "italic", marginBottom: 24 }}>Missione completata</p>
+
+      {/* Stats */}
+      <div style={{ display: "flex", gap: 12, marginBottom: 24 }}>
+        <div style={{ background: "#1A1A1A", border: "1px solid #333", borderRadius: 8, padding: "12px 20px", textAlign: "center" }}>
+          <div style={{ fontSize: 22, color: "#B8860B", fontFamily: "Georgia, serif" }}>{ore > 0 ? `${ore}h ${minuti}m` : `${minuti}m`}</div>
+          <div style={{ fontSize: 10, color: "#555", letterSpacing: 2, marginTop: 4 }}>TEMPO</div>
+        </div>
+        <div style={{ background: "#1A1A1A", border: "1px solid #333", borderRadius: 8, padding: "12px 20px", textAlign: "center" }}>
+          <div style={{ fontSize: 22, color: "#B8860B", fontFamily: "Georgia, serif" }}>{kmPercorsi.toFixed(1)} km</div>
+          <div style={{ fontSize: 10, color: "#555", letterSpacing: 2, marginTop: 4 }}>PERCORSI</div>
+        </div>
+        <div style={{ background: "#1A1A1A", border: "1px solid #333", borderRadius: 8, padding: "12px 20px", textAlign: "center" }}>
+          <div style={{ fontSize: 22, color: "#B8860B", fontFamily: "Georgia, serif" }}>13</div>
+          <div style={{ fontSize: 10, color: "#555", letterSpacing: 2, marginTop: 4 }}>SIGILLI</div>
+        </div>
+      </div>
+
+      {/* Certificato */}
+      <div style={{ background: "#1A1A1A", border: "1px solid #B8860B", borderRadius: 8, padding: 24, maxWidth: 340, marginBottom: 24 }}>
+        <div style={{ fontSize: 10, color: "#B8860B", letterSpacing: 3, marginBottom: 16 }}>◆ CERTIFICATO DEI FRATRES</div>
         <p style={{ color: "#C0A882", fontSize: 13, lineHeight: 1.8, margin: 0 }}>
-          Hai attraversato duemila anni di Roma. I tredici sigilli dei Fratres Aeternae Urbis sono stati trovati. La società segreta ti ha visto — e ti ha riconosciuto come uno dei suoi.
+          Questo testimonia che il portatore ha attraversato Roma decifrando i tredici sigilli nascosti dai <em style={{ color: "#B8860B" }}>Fratres Aeternae Urbis</em>.
+          <br /><br />
+          Ha camminato per <strong style={{ color: "#B8860B" }}>{kmPercorsi.toFixed(1)} km</strong> attraverso duemila anni di storia, completando l'indagine in <strong style={{ color: "#B8860B" }}>{ore > 0 ? `${ore}h e ${minuti} minuti` : `${minuti} minuti`}</strong>.
           <br /><br />
           <em style={{ color: "#B8860B" }}>"Qui videt, vivit."</em>
         </p>
       </div>
+
+      <p style={{ color: "#555", fontSize: 11, letterSpacing: 1 }}>FAIS UNO SCREENSHOT PER CONSERVARE IL CERTIFICATO</p>
     </div>
   );
 }
@@ -312,28 +421,52 @@ export default function App() {
   const [tappaCorrente, setTappaCorrente] = useState(0);
   const [userLat, setUserLat] = useState(null);
   const [userLng, setUserLng] = useState(null);
+  const [prevLat, setPrevLat] = useState(null);
+  const [prevLng, setPrevLng] = useState(null);
+  const [kmPercorsi, setKmPercorsi] = useState(0);
+  const [tempoTotale, setTempoTotale] = useState(0);
+  const timerRef = useRef(null);
 
+  // GPS
   useEffect(() => {
     if (!navigator.geolocation) return;
     const watch = navigator.geolocation.watchPosition(
-      (pos) => { setUserLat(pos.coords.latitude); setUserLng(pos.coords.longitude); },
+      (pos) => {
+        const { latitude, longitude } = pos.coords;
+        setUserLat(latitude);
+        setUserLng(longitude);
+        if (prevLat && prevLng && schermata === "gioco") {
+          const dLat = (latitude - prevLat) * 111000;
+          const dLng = (longitude - prevLng) * 111000 * Math.cos(latitude * Math.PI / 180);
+          const dist = Math.sqrt(dLat * dLat + dLng * dLng);
+          if (dist > 5 && dist < 500) {
+            setKmPercorsi(k => k + dist / 1000);
+          }
+        }
+        setPrevLat(latitude);
+        setPrevLng(longitude);
+      },
       () => {},
       { enableHighAccuracy: true }
     );
     return () => navigator.geolocation.clearWatch(watch);
-  }, []);
+  }, [prevLat, prevLng, schermata]);
 
-  const apriMaps = (tappa) => {
-    window.open(`https://www.google.com/maps/dir/?api=1&destination=${tappa.lat},${tappa.lng}&travelmode=walking`, "_blank");
-  };
+  // Timer
+  useEffect(() => {
+    if (schermata === "gioco") {
+      timerRef.current = setInterval(() => {
+        setTempoTotale(t => t + 1);
+      }, 1000);
+    } else {
+      clearInterval(timerRef.current);
+    }
+    return () => clearInterval(timerRef.current);
+  }, [schermata]);
 
- const completaTappa = () => {
+  const completaTappa = () => {
     if (tappaCorrente < TAPPE.length - 1) {
-      setTappaCorrente((t) => t + 1);
-      setFase("aneddoto");
-      setRisposta("");
-      setErrore(false);
-      setTentativi(0);
+      setTappaCorrente(t => t + 1);
       window.scrollTo(0, 0);
     } else {
       setSchermata("finale");
@@ -341,7 +474,7 @@ export default function App() {
   };
 
   if (schermata === "intro") return <SchermataIntro onStart={() => setSchermata("gioco")} />;
-  if (schermata === "finale") return <SchermataFinale />;
+  if (schermata === "finale") return <SchermataFinale tempoTotale={tempoTotale} kmPercorsi={kmPercorsi} />;
 
   return (
     <SchermataTappa
@@ -351,7 +484,8 @@ export default function App() {
       userLat={userLat}
       userLng={userLng}
       onCompleta={completaTappa}
-      onApriMaps={apriMaps}
+      kmPercorsi={kmPercorsi}
+      tempoTotale={tempoTotale}
     />
   );
 }
